@@ -190,12 +190,13 @@ def user_email(email):
                 rsp_txt = "NOT FOUND"
 
         elif inputs["method"] == "PUT":
-            rsp = user_service.update_user(email)
+            new_user_info = request.get_json()
+            rsp = user_service.update_user(email, new_user_info)
 
             if rsp is not None:
                 rsp_data = rsp
                 rsp_status = 200
-                rsp_txt = "OK"
+                rsp_txt = "User info has been updated successfully"
             else:
                 rsp_data = None
                 rsp_status = 500
@@ -207,7 +208,7 @@ def user_email(email):
             if rsp is not None:
                 rsp_data = rsp
                 rsp_status = 200
-                rsp_txt = "OK"
+                rsp_txt = "User deleted successfully"
             else:
                 rsp_data = None
                 rsp_status = 500
@@ -243,9 +244,11 @@ Register a new user.
 :return: Response 
 '''
 @application.route("/api/registrations", methods=["POST"])
-def user_registration(user_info):
+def user_registration():
+    user_info = request.get_json()
     global _user_service
     inputs = log_and_extract_input(demo, {"parameters": user_info})
+    full_rsp = None
     rsp_data = None
     rsp_status = None
     rsp_txt = None
@@ -260,6 +263,7 @@ def user_registration(user_info):
             rsp_data = rsp
             rsp_status = 200
             rsp_txt = "OK"
+            full_rsp = "User created successfully"
         else:
             rsp_data = None
             rsp_status = 404
