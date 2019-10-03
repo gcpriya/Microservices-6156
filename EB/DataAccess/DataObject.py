@@ -63,6 +63,39 @@ class UsersRDB(BaseDataObject):
 
         return result
 
+    @classmethod
+    def delete_user(cls, user_email):
+        result = None
+        try:
+            sql = "DELETE FROM e6156.users WHERE email=%s"
+            res, data = data_adaptor.run_q(sql=sql, args=(user_email), fetch=True)
+            if res != 1:
+                result = None
+            else:
+                result = user_email
+        except Exception as e:
+            raise DataException
+
+        return result
+
+    @classmethod
+    def update_user(cls, user_email, new_user_info):
+        result = None
+        try:
+            sql = "UPDATE e6156.users SET "
+            for fieldname in new_user_info:
+                sql += str(fieldname) + " = '" + str(new_user_info[fieldname]) + "', "
+            sql = sql.rstrip(' ,') + " "
+            sql += " WHERE email = %s"
+            res, data = data_adaptor.run_q(sql=sql, args=user_email, fetch=True)
+            if res != 1:
+                result = None
+            else:
+                result = new_user_info['id']
+        except Exception as e:
+            raise DataException
+
+        return result
 
 
 

@@ -62,6 +62,36 @@ class UsersService(BaseService):
 
         return result
 
+    '''
+    Delete existing user information
+
+    :param user_email: Email id of the user to be deleted
+    :return Boolean
+    '''
+    @classmethod
+    def delete_user(cls, user_email):
+        if UsersRDB.get_by_email(user_email) is None:
+            raise TypeError("User with given email: " + user_email + " does not exist.")
+
+        result = UsersRDB.delete_user(user_email)
+        return result
+
+    '''
+    Update existing user information
+
+    :param user_email: Email id of the user to be updated
+    :param new_user_info: Dictionary containing new user information
+
+    :return Boolean
+    '''
+    @classmethod
+    def update_user(cls, user_email, new_user_info):
+        if UsersRDB.get_by_email(user_email) is None:
+            raise TypeError("User with given email: " + user_email + " does not exist.")
+
+        result = UsersRDB.update_user(user_email, new_user_info)
+        return result
+
 
 
 

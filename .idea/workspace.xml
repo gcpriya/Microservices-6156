@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="7f50e804-45c7-480b-8f64-c95b9cd1a620" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/EB/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/EB/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/EB/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/EB/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EB/CustomerInfo/Users.py" beforeDir="false" afterPath="$PROJECT_DIR$/EB/CustomerInfo/Users.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/EB/DataAccess/DataObject.py" beforeDir="false" afterPath="$PROJECT_DIR$/EB/DataAccess/DataObject.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/EB/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/EB/app.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -19,8 +19,8 @@
           <file pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/EB/app.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="943">
-                  <caret line="226" column="18" lean-forward="true" selection-start-line="226" selection-start-column="18" selection-end-line="226" selection-end-column="18" />
+                <state relative-caret-position="552">
+                  <caret line="209" column="30" lean-forward="true" selection-start-line="209" selection-start-column="30" selection-end-line="209" selection-end-column="30" />
                   <folding>
                     <element signature="e#294#336#0" expanded="true" />
                   </folding>
@@ -31,7 +31,8 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/EB/DataAccess/DataAdaptor.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
+                <state relative-caret-position="87">
+                  <caret line="156" column="4" selection-start-line="156" selection-start-column="4" selection-end-line="156" selection-end-column="4" />
                   <folding>
                     <element signature="e#0#14#0" expanded="true" />
                   </folding>
@@ -42,21 +43,10 @@
           <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/EB/DataAccess/DataObject.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state>
+                <state relative-caret-position="722">
+                  <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
                   <folding>
                     <element signature="e#0#45#0" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/EB/CustomerInfo/Users.py">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="433">
-                  <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
-                  <folding>
-                    <element signature="e#0#35#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -66,11 +56,23 @@
       </split-first>
       <split-second>
         <leaf>
-          <file pinned="false" current-in-tab="true">
+          <file pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/EB/app.py">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="212">
-                  <caret line="176" column="8" lean-forward="true" selection-start-line="176" selection-start-column="8" selection-end-line="176" selection-end-column="68" />
+                <state relative-caret-position="-9">
+                  <caret line="184" column="21" selection-start-line="184" selection-start-column="21" selection-end-line="184" selection-end-column="21" />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/EB/CustomerInfo/Users.py">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="654">
+                  <caret line="91" column="32" selection-start-line="91" selection-start-column="32" selection-end-line="91" selection-end-column="32" />
+                  <folding>
+                    <element signature="e#0#35#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -91,6 +93,8 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/EB/app.py" />
+        <option value="$PROJECT_DIR$/EB/CustomerInfo/Users.py" />
+        <option value="$PROJECT_DIR$/EB/DataAccess/DataObject.py" />
       </list>
     </option>
   </component>
@@ -147,6 +151,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
   </component>
   <component name="RunDashboard">
@@ -200,36 +205,38 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/EB/DataAccess/DataAdaptor.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="87">
+          <caret line="156" column="4" selection-start-line="156" selection-start-column="4" selection-end-line="156" selection-end-column="4" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/EB/DataAccess/DataObject.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/EB/CustomerInfo/Users.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="433">
-          <caret line="48" lean-forward="true" selection-start-line="48" selection-end-line="48" />
+        <state relative-caret-position="654">
+          <caret line="91" column="32" selection-start-line="91" selection-start-column="32" selection-end-line="91" selection-end-column="32" />
           <folding>
             <element signature="e#0#35#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/EB/DataAccess/DataObject.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="722">
+          <caret line="100" lean-forward="true" selection-start-line="100" selection-end-line="100" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/EB/app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="943">
-          <caret line="226" column="18" lean-forward="true" selection-start-line="226" selection-start-column="18" selection-end-line="226" selection-end-column="18" />
+        <state relative-caret-position="552">
+          <caret line="209" column="30" lean-forward="true" selection-start-line="209" selection-start-column="30" selection-end-line="209" selection-end-column="30" />
           <folding>
             <element signature="e#294#336#0" expanded="true" />
           </folding>
