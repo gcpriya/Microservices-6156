@@ -209,6 +209,50 @@ def user_email(email):
 
     return full_rsp
 
+'''
+Register a new user.
+
+:param user_info: A dictionary containing first name, last name, email and password.
+                  Parameter validation:
+                    - Must contain first name, last name, email and password
+                    - Email must be valid, i.e. contains '@'
+:return: Response 
+'''
+@application.route("/api/registrations", methods=["POST"])
+def user_registration(user_info):
+    global _user_service
+    inputs = log_and_extract_input(demo, {"parameters": user_info})
+    rsp_data = None
+    rsp_status = None
+    rsp_txt = None
+
+    try:
+        user_service = _get_user_service()
+        logger.error("/email: _user_service = " + str(user_service))
+
+        rsp = user_service.create_user(user_info)
+
+        if rsp is not None:
+            rsp_data = rsp
+            rsp_status = 200
+            rsp_txt = "OK"
+        else:
+            rsp_data = None
+            rsp_status = 404
+            rsp_txt = "NOT FOUND"
+
+    except Exception as e:
+        log_msg = "email: Exception = " + str(e)
+        logger.error(log_msg)
+        rsp_status = 500
+        rsp_txt = "INTERNAL SERVER ERROR"
+        full_rsp = Response(rsp_txt, status=rsp_status, content_type="text/plain")
+
+    log_response("/email", rsp_status, rsp_data, rsp_txt)
+
+    return full_rsp
+
+
 
 logger.debug("__name__ = " + str(__name__))
 # run the app.
