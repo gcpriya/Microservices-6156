@@ -4,18 +4,22 @@ import json
 import boto3
 from botocore.exceptions import ClientError
 
+# Include the jwt folder along with this py file
+# https://github.com/donald-f-ferguson/E6156-Microservices-Cloud-Native-Applications/tree/master/Projects/SampleLambda/jwt
+# import jwt.jwt.api_jwt as apij
+
 # Replace sender@example.com with your "From" address.
 # This address must be verified with Amazon SES.
 #SENDER = "Donald F. Ferguson <dff@cs.columbia.edu>"
 
 SENDER = "Bhavya Shahi <bs3118@columbia.edu>"
 
-# Replace recipient@example.com with a "To" address. If your account 
+# Replace recipient@example.com with a "To" address. If your account
 # is still in the sandbox, this address must be verified.
 RECIPIENT = "bhavya754@gmail.com"
 
 # Specify a configuration set. If you do not want to use a configuration
-# set, comment the following variable, and the 
+# set, comment the following variable, and the
 # ConfigurationSetName=CONFIGURATION_SET argument below.
 CONFIGURATION_SET = "ConfigSet"
 
@@ -40,12 +44,14 @@ BODY_HTML = """<html>
     <a href='https://aws.amazon.com/ses/'>Amazon SES</a> using the
     <a href='https://aws.amazon.com/sdk-for-python/'>
       AWS SDK for Python (Boto)</a>.</p>
-      <form action="http://google.com">
-        <input type="submit" value="Go to Google" />
+      # <form action="http://google.com">
+      <form action="http://path/to/rest/endpoint/{0}">
+        # <input type="submit" value="Go to Google" />
+        <input type="submit" value="Verify email!" />
     </form>
 </body>
 </html>
-            """            
+            """
 
 # The character encoding for the email.
 CHARSET = "UTF-8"
@@ -53,8 +59,13 @@ CHARSET = "UTF-8"
 # Create a new SES resource and specify a region.
 client = boto3.client('ses',region_name=AWS_REGION)
 
+# Secret key used to encrypt/decrypt
+# Must be same in decrypting lambda
+_secret = "secret"
+
 # Try to send the email.
-def send_email(em):
+# def send_email(em):
+def send_email(em, user_info_hash):
     try:
         print("em = ", em)
         #Provide the contents of the email.
@@ -68,7 +79,8 @@ def send_email(em):
                 'Body': {
                     'Html': {
                         'Charset': CHARSET,
-                        'Data': BODY_HTML,
+                        # 'Data': BODY_HTML,
+                        'Data': BODY_HTML.format(user_info_hash),
                     },
                     'Text': {
                         'Charset': CHARSET,
@@ -85,7 +97,7 @@ def send_email(em):
             # following line
             #ConfigurationSetName=CONFIGURATION_SET,
             )
-    # Display an error if something goes wrong.    
+    # Display an error if something goes wrong.
     except ClientError as e:
         print(e.response['Error']['Message'])
     else:
@@ -97,7 +109,9 @@ def handle_sns_event(records):
     sns_event = records[0]['Sns']
     topic_arn = sns_event.get("TopicArn", None)
     topic_subject = sns_event.get("Subject", None)
-    topic_msg = sns_event.get("Message", None)
+
+    topic_msg = sns_event.get("Message", None) # User info that would be hashed
+
     print("SNS Subject = ", topic_subject)
     if topic_msg:
         json_msg = None
@@ -109,7 +123,10 @@ def handle_sns_event(records):
         print(json_msg)
         # em = json_msg["customers_email"]
         em = topic_msg.get('customers_email')
-        send_email(em)
+        user_info_hash = apij.encode(topic_msg, key=_secret)
+        # To decode: apij.decode(user_info_hash, key=_secret)
+        # send_email(em)
+        send_email(em, user_info_hash)
 
 
 def lambda_handler(event, context):
