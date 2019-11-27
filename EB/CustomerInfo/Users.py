@@ -1,7 +1,6 @@
 from abc import ABC, abstractmethod
 from Context.Context import Context
 from DataAccess.DataObject import UsersRDB as UsersRDB
-
 # The base classes would not be IN the project. They would be in a separate included package.
 # They would also do some things.
 
@@ -59,7 +58,13 @@ class UsersService(BaseService):
                            "Email looks invalid: " + v)
 
         result = UsersRDB.create_user(user_info=user_info)
+#         response = sns.publish(
+#             TopicArn='arn:aws:sns:us-east-2:665034560559:MyTopic',    
+#             Message='this is from user creation',    
+#         )
 
+#         # Print out the response
+#         print(response)
         return result
 
     '''
