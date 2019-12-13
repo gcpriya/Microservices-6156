@@ -3,6 +3,9 @@ from Context.Context import Context
 from DataAccess.DataObject import UsersRDB as UsersRDB
 # The base classes would not be IN the project. They would be in a separate included package.
 # They would also do some things.
+import boto3
+import json
+
 
 class ServiceException(Exception):
 
@@ -17,7 +20,7 @@ class ServiceException(Exception):
 
 class BaseService():
 
-    missing_field   =   2001
+    missing_field = 2001
 
     def __init__(self):
         pass
@@ -31,7 +34,7 @@ class UsersService(BaseService):
 
         if ctx is None:
             ctx = Context.get_default_context()
-
+        self.sns_client = boto3.client('sns',region_name='us-east-1')
         self._ctx = ctx
 
 
@@ -43,9 +46,6 @@ class UsersService(BaseService):
 
     @classmethod
     def create_user(cls, user_info):
-
-
-
         for f in UsersService.required_create_fields:
             v = user_info.get(f, None)
             if v is None:
@@ -54,14 +54,14 @@ class UsersService(BaseService):
 
             if f == 'email':
                 if v.find('@') == -1:
-                    raise ServiceException(ServiceException.bad_data,
-                           "Email looks invalid: " + v)
+                    raise ServiceException(ServiceException.bad_data, "Email looks invalid: " + v)
 
         result = UsersRDB.create_user(user_info=user_info)
-#         response = sns.publish(
-#             TopicArn='arn:aws:sns:us-east-2:665034560559:MyTopic',    
-#             Message='this is from user creation',    
-#         )
+        email = user_info.get('email', None)
+        response = boto3.client('sns',region_name='us-east-1').publish(
+            TopicArn='arn:aws:sns:us-east-1:270598185649:user_created',    
+            Message = json.dumps({'customers_email' : email }),    
+        )
 
 #         # Print out the response
 #         print(response)
@@ -96,8 +96,3 @@ class UsersService(BaseService):
 
         result = UsersRDB.update_user(user_email, new_user_info)
         return result
-
-
-
-
-
