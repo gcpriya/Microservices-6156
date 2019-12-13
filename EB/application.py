@@ -11,6 +11,8 @@ import json
 
 from CustomerInfo.Users import UsersService as UserService
 from Context.Context import Context
+from Services.CustomersInfo.Users import UsersService as UserService
+from Services.RegisterLogin import RegisterLoginSvc as RegisterLoginSvc
 
 # Setup and use the simple, common Python logging framework. Send log messages to the console.
 # The application should get the log level out of the context. We will change later.
@@ -77,6 +79,14 @@ def _get_user_service():
         _user_service = UserService(_get_default_context())
 
     return _user_service
+
+def _get_registration_service():
+    global _registration_service
+
+    if _registration_service is None:
+        _registration_service = RegisterLoginSvc()
+
+    return _registration_service
 
 def init():
 
@@ -280,7 +290,53 @@ def user_registration():
 
     return full_rsp
 
+@application.route("/api/login", methods=["POST"])
+def login():
+    inputs = log_and_extract_input(demo, {"parameters": None})
+    rsp_data = None
+    rsp_status = None
+    rsp_txt = None
 
+    try:
+
+        r_svc = _get_registration_service()
+
+        logger.error("/api/login: _r_svc = " + str(r_svc))
+
+        if inputs["method"] == "POST":
+
+            rsp = r_svc.login(inputs['body'])
+
+            if rsp is not None:
+                rsp_data = "OK"
+                rsp_status = 201
+                rsp_txt = "CREATED"
+            else:
+                rsp_data = None
+                rsp_status = 403
+                rsp_txt = "NOT AUTHORIZED"
+        else:
+            rsp_data = None
+            rsp_status = 501
+            rsp_txt = "NOT IMPLEMENTED"
+
+        if rsp_data is not None:
+            # TODO Generalize generating links
+            headers = {"Authorization": rsp}
+            full_rsp = Response(json.dumps(rsp_data, default=str), headers=headers,
+                                status=rsp_status, content_type="application/json")
+        else:
+            full_rsp = Response(rsp_txt, status=rsp_status, content_type="text/plain")
+
+    except Exception as e:
+        log_msg = "/api/registration: Exception = " + str(e)
+        logger.error(log_msg)
+        rsp_status = 500
+        rsp_txt = "INTERNAL SERVER ERROR. Please take COMSE6156 -- Cloud Native Applications."
+        full_rsp = Response(rsp_txt, status=rsp_status, content_type="text/plain")
+
+    log_response("/api/registration", rsp_status, rsp_data, rsp_txt)
+    return full_rsp
 
 logger.debug("__name__ = " + str(__name__))
 # run the app.
