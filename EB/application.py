@@ -22,6 +22,10 @@ logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
+# JWT import for encoding/decoding
+import jwt.api_jwt as apij
+_secret = "secret"
+
 ###################################################################################################################
 #
 # AWS put most of this in the default application template.
@@ -180,6 +184,9 @@ def user_email(email):
     rsp_status = None
     rsp_txt = None
 
+    # Try to extract the ETag header 
+    etag = request.headers.get('etag')
+
     try:
 
         user_service = _get_user_service()
@@ -192,8 +199,18 @@ def user_email(email):
 
             if rsp is not None:
                 rsp_data = rsp
-                rsp_status = 200
-                rsp_txt = "OK"
+                # rsp_status = 200
+                # rsp_txt = "OK"
+                response_hash = apij.encode(rsp_data, key=_secret).decode('utf-')
+                if etag and etag == response_hash:
+                    # If the hash is same then we do not need to
+                    # respond with data
+                    rsp_status = 304 # something
+                    rsp_txt = "Unmodified Data"
+                else:
+                    rsp_data['etag'] = response_hash
+                    rsp_status = 200
+                    rsp_txt = "OK"
             else:
                 rsp_data = None
                 rsp_status = 404
@@ -201,16 +218,34 @@ def user_email(email):
 
         elif inputs["method"] == "PUT":
             new_user_info = request.get_json()
-            rsp = user_service.update_user(email, new_user_info)
+            all_ok = True
+            #-----------
+            # Check if client hash is latest
+            get_rsp = user_service.get_by_email(email)
 
-            if rsp is not None:
-                rsp_data = rsp
-                rsp_status = 200
-                rsp_txt = "User info has been updated successfully"
+            if get_rsp is None or etag is None:
+                all_ok = False
+            else:
+                rsp_data = get_rsp
+                response_hash = apij.encode(rsp_data, key=_secret).decode('utf-')
+                if etag != response_hash:
+                    all_ok = False
+            #-----------
+            if all_ok:
+                rsp = user_service.update_user(email, new_user_info)
+
+                if rsp is not None:
+                    rsp_data = rsp
+                    rsp_status = 200
+                    rsp_txt = "User info has been updated successfully"
+                else:
+                    rsp_data = None
+                    rsp_status = 500
+                    rsp_txt = "Internal server error - PUT failed"
             else:
                 rsp_data = None
-                rsp_status = 500
-                rsp_txt = "Internal server error - PUT failed"
+                rsp_status = 400
+                rsp_txt = "Stale data - Bad request"
 
         elif inputs["method"] == "DELETE":
             rsp = user_service.delete_user(email)
@@ -246,7 +281,6 @@ def user_email(email):
 
 '''
 Register a new user.
-
 :param user_info: A dictionary containing first name, last name, email and password.
                   Parameter validation:
                     - Must contain first name, last name, email and password
